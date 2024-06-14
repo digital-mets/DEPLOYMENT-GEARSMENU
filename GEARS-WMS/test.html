@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Background Image on Hover</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <!--<link rel="stylesheet" href="styles.css">-->
+
+    <style>
+        body {
+            background: url("../images/GEARSBG.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            color: #FFF;
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff;
+        }
+
+
+
+        .image-button {
+            margin: 5px;
+            padding: 10px 20px;
+        }
+
+        /*.image-backdrop {
+            height: 100vh;
+            width: 100%;
+           
+            z-index: 0;
+            position: absolute;
+            transition: .3s ease-in-out;
+        }
+
+            .image-backdrop img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }*/
+
+        .button-group {
+            z-index: 1;
+        }
+
+        .image-backdrop {
+            height: 100vh;
+            width: 100%;
+            z-index: 0;
+            position: absolute;
+            transition: .3s ease-in-out;
+            /*width: 300px;
+            height: 300px;
+            border: 1px solid #ccc;*/
+            /*display: none;*/
+            overflow: hidden;
+        }
+
+            .image-backdrop img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .image-button .image-backdrop {
+            transition: .3s ease-in-out;
+            display: none;
+        }
+
+        .image-button:hover .image-backdrop {
+            display: block;
+        }
+    </style>
+
+    <!--<script>
+        $(document).ready(function () {
+            var images = [
+                '/images/b1.jpg',
+                '/images/bg2.jpg',
+                '/images/GEARSBG.jpg'
+            ];
+
+            // Preload images
+            $(images).each(function () {
+                $('<img/>')[0].src = this;
+            });
+        });
+    </script>-->
+</head>
+<body>
+    <!--<div id="image-backdrop" class="image-backdrop">
+        <img id="preloaded-image" src="/images/GEARSBG.jpg" alt="Preloaded Image">
+    </div>-->
+
+    <div class="button-group">
+        <div class="btn btn-primary image-button" id="button1" data-image="/images/b1.jpg">Image 1</div>
+        <div class="btn btn-primary image-button" id="button2" data-image="/images/bg2.jpg">Image 2</div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            preLoadImages()
+
+            var fadeOutComplete = false;
+
+            var defaultImage = "/images/GEARSBG.jpg";
+
+            // Handle mouseenter and mouseleave events to show the preloaded images with fade transition
+            $('.image-button').on('mouseenter', function () {
+                var newImageSrc = $(this).data('image');
+                if (fadeOutComplete) {
+                    //$('#preloaded-image').attr('src', newImageSrc).stop(true, true).fadeIn(300);
+                    $('body').css('background-image', 'url(' + newImageSrc + ')').stop(true, true).fadeIn(300);
+                } else {
+                    $('body').stop(true, true).fadeOut(300, function () {
+                        $(this).css('background-image', 'url(' + newImageSrc + ')').fadeIn(300);
+                    });
+                    //$('#preloaded-image').stop(true, true).fadeOut(300, function () {
+                    //    $(this).attr('src', newImageSrc).fadeIn(300);
+                    //});
+                }
+                fadeOutComplete = false;
+            }).on('mouseleave', function () {
+                $('body').stop(true, true).fadeOut(300, function () {
+                    $(this).css('background-image', 'url(' + newImageSrc + ')');
+                    fadeOutComplete = true;
+                });
+                //$('#preloaded-image').stop(true, true).fadeOut(300, function () {
+                //    $(this).attr('src', defaultImage);
+                //    fadeOutComplete = true;
+                //});
+            });
+
+            //$('.image-button').on('mouseenter', function () {
+            //    $('#preloaded-image').attr('src', $(this).data("image")).stop(true, true).fadeIn(300);
+            //}).on('mouseleave', function () {
+            //    $('#preloaded-image').stop(true, true).fadeOut(300,function () {
+            //        $(this).attr('src', "/images/GEARSBG.jpg");
+            //    });
+            //});
+
+            //$('.image-button').hover(
+            //    function () {
+            //        if ($("#preloaded-image").attr('src')) {
+            //            changeImage($(this).data("image"));
+            //        } else {
+            //            $('#preloaded-image').hide();
+            //        }
+            //    },
+            //    function () {
+            //        changeImage("/images/GEARSBG.jpg");
+            //    }
+            //);
+            
+        });
+
+        function preLoadImages() {
+            var images = [
+                '/images/GEARSBG.jpg',
+                '/images/b1.jpg',
+                '/images/bg2.jpg'
+            ];
+
+            // Preload images
+            $(images).each(function () {
+                $('<img/>')[0].src = this;
+            });
+        }
+
+       
+            
+    </script>
+</body>
+</html>
